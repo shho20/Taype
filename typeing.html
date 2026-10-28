@@ -1,0 +1,717 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#6554d9">
+<title>تست سرعت تایپ حرفه‌ای</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--primary:#6554d9;--primary2:#8b5cf6;
+--bg:#eef2fb;--card:#fff;--text:#20243a;
+--muted:#68708a;--border:#e0e5f0;--good:#168b55;
+--bad:#d73750;--soft:#f4f3ff;
+--shadow:0 8px 25px rgba(36,43,80,.08)
+}
+body{
+font-family:Tahoma,Arial,sans-serif;
+background:linear-gradient(135deg,var(--bg),#f8f9ff);
+color:var(--text);min-height:100vh;padding:15px;
+transition:background .25s,color .25s
+}
+body.dark{
+--bg:#111522;--card:#1c2232;--text:#f0f2ff;
+--muted:#a9b0c7;--border:#343b50;--soft:#292641;
+--shadow:0 8px 25px rgba(0,0,0,.2);
+background:linear-gradient(135deg,#111522,#19182b)
+}
+.app{max-width:850px;margin:auto}
+header{text-align:center;padding:12px 0 20px}
+.logo{
+display:inline-flex;align-items:center;justify-content:center;
+width:65px;height:65px;border-radius:22px;
+background:linear-gradient(135deg,var(--primary),var(--primary2));
+color:white;font-size:32px;box-shadow:var(--shadow);margin-bottom:12px
+}
+h1{font-size:clamp(23px,5vw,32px);margin-bottom:8px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.9}
+.card{
+background:var(--card);border:1px solid var(--border);
+border-radius:20px;padding:18px;margin-bottom:15px;
+box-shadow:var(--shadow)
+}
+.section-title{
+font-size:16px;font-weight:bold;margin-bottom:15px;
+display:flex;align-items:center;gap:8px
+}
+.settings-grid{
+display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px
+}
+.field{display:flex;flex-direction:column;gap:7px}
+.field label{font-size:13px;color:var(--muted)}
+select,input,button,textarea{font:inherit}
+select,input[type="text"]{
+width:100%;padding:12px;border:1px solid var(--border);
+border-radius:12px;background:var(--card);color:var(--text);outline:none
+}
+select:focus,input:focus{border-color:var(--primary)}
+button{
+border:none;border-radius:12px;padding:12px 15px;
+cursor:pointer;font-weight:bold;
+transition:transform .15s,opacity .15s,background .15s
+}
+button:active{transform:scale(.98)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.primary-btn{
+color:white;background:linear-gradient(135deg,var(--primary),var(--primary2))
+}
+.secondary-btn{
+color:var(--text);background:var(--soft);border:1px solid var(--border)
+}
+.danger-btn{background:#fff0f1;color:#c62842}
+body.dark .danger-btn{background:#43212c;color:#ffb6c1}
+.action-grid{
+display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+gap:10px;margin-top:15px
+}
+.status-row{
+display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+gap:10px;margin-bottom:15px
+}
+.stat{
+text-align:center;padding:14px 8px;background:var(--soft);
+border:1px solid var(--border);border-radius:15px
+}
+.stat-value{
+font-size:clamp(20px,5vw,29px);font-weight:bold;
+color:var(--primary);margin-bottom:6px;direction:ltr
+}
+.stat-label{font-size:12px;color:var(--muted)}
+.progress-wrap{
+width:100%;height:8px;border-radius:10px;overflow:hidden;
+background:var(--border);margin:10px 0 17px
+}
+.progress-bar{
+width:100%;height:100%;
+background:linear-gradient(90deg,var(--primary),var(--primary2));
+transition:width .2s linear
+}
+.target-box{
+background:var(--soft);border:1px solid var(--border);
+border-radius:16px;padding:18px 15px;min-height:115px;
+display:flex;align-items:center;justify-content:center;
+margin-bottom:13px;direction:rtl;overflow-wrap:anywhere
+}
+#targetText{
+font-size:clamp(20px,5vw,29px);line-height:2.1;
+font-weight:bold;text-align:center;word-break:normal
+}
+#targetText .correct{color:var(--good)}
+#targetText .incorrect{
+color:var(--bad);text-decoration:underline;text-decoration-thickness:2px
+}
+#targetText .remaining{color:var(--muted)}
+#targetText .space-mark{
+color:#17a673;background:rgba(23,166,115,.12);border-radius:4px
+}
+.input-area{
+width:100%;min-height:110px;resize:vertical;padding:14px;
+border:2px solid var(--border);border-radius:14px;
+background:var(--card);color:var(--text);font-size:20px;
+line-height:1.9;outline:none;direction:rtl
+}
+.input-area:focus{border-color:var(--primary)}
+.input-area:disabled{opacity:.7}
+.message{
+font-size:13px;color:var(--muted);line-height:1.9;
+margin-top:10px;text-align:center
+}
+.hidden{display:none!important}
+.result-box{
+text-align:center;background:var(--soft);padding:18px;
+border-radius:15px;margin-top:15px;border:1px solid var(--border)
+}
+.result-title{font-size:20px;font-weight:bold;margin-bottom:12px}
+.result-grid{
+display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px
+}
+.result-item{
+background:var(--card);border:1px solid var(--border);
+border-radius:12px;padding:12px
+}
+.result-item strong{
+display:block;color:var(--primary);font-size:22px;
+margin-bottom:6px;direction:ltr
+}
+.result-item span{font-size:12px;color:var(--muted)}
+.record-list{list-style:none}
+.record-list li{
+display:flex;justify-content:space-between;align-items:center;
+gap:10px;padding:12px 0;border-bottom:1px solid var(--border);
+font-size:12px;line-height:1.8
+}
+.record-list li:last-child{border-bottom:none}
+.record-score{
+font-weight:bold;color:var(--primary);direction:ltr;white-space:nowrap
+}
+.settings-toggle{width:100%;padding:15px;font-size:16px}
+.settings-panel{margin-top:16px}
+.theme-list{
+display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+gap:10px;margin-top:12px;margin-bottom:20px
+}
+.theme-choice{
+height:44px;border:3px solid transparent;border-radius:12px;
+padding:0;position:relative;touch-action:manipulation;
+-webkit-tap-highlight-color:transparent
+}
+.theme-choice.selected{outline:2px solid var(--text);outline-offset:2px}
+.theme-choice.selected::after{
+content:"✓";position:absolute;inset:0;display:flex;
+align-items:center;justify-content:center;color:white;
+font-size:23px;text-shadow:0 1px 4px #222
+}
+.setting-row{
+display:flex;align-items:center;justify-content:space-between;
+gap:12px;margin-top:12px;padding:12px;
+border:1px solid var(--border);border-radius:12px
+}
+.setting-row span{font-size:13px;line-height:1.8}
+.setting-row button{white-space:nowrap;min-width:80px}
+footer{
+text-align:center;color:var(--muted);font-size:12px;
+padding:15px 5px 8px;line-height:2
+}
+footer strong{color:var(--primary)}
+.modal-backdrop{
+position:fixed;inset:0;background:rgba(10,12,25,.65);
+display:flex;align-items:center;justify-content:center;
+padding:16px;z-index:100
+}
+.modal{
+width:100%;max-width:520px;max-height:85vh;overflow:auto;
+background:var(--card);color:var(--text);
+border-radius:20px;padding:22px;box-shadow:var(--shadow)
+}
+.modal h2{font-size:20px;margin-bottom:15px}
+.modal p,.modal li{font-size:14px;line-height:2;margin-bottom:8px}
+.modal ul{padding-right:20px}
+.modal-actions{display:flex;gap:10px;margin-top:18px}
+.modal-actions button{flex:1}
+@media(max-width:480px){
+body{padding:10px}
+.card{padding:14px;border-radius:16px}
+.settings-grid{gap:10px}
+.action-grid{gap:8px}
+.action-grid button{padding:12px 7px;font-size:12px}
+.theme-list{gap:8px}
+.status-row{gap:7px}
+.stat{padding:12px 4px}
+.stat-label{font-size:11px}
+.setting-row{padding:10px}
+.setting-row span{font-size:12px}
+.record-list li{font-size:11px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+<header>
+  <div class="logo">⌨️</div>
+  <h1>تست سرعت تایپ حرفه‌ای</h1>
+  <p class="subtitle">سرعت، دقت و پیشرفت تایپ خود را بسنجید</p>
+</header>
+
+<main>
+<section class="card">
+  <div class="section-title">📊 وضعیت آزمون</div>
+  <div class="status-row">
+    <div class="stat"><div class="stat-value" id="timeValue">۳۰</div><div class="stat-label">زمان باقی‌مانده</div></div>
+    <div class="stat"><div class="stat-value" id="wpmValue">۰</div><div class="stat-label">کلمه در دقیقه</div></div>
+    <div class="stat"><div class="stat-value" id="accuracyValue">۱۰۰٪</div><div class="stat-label">دقت تایپ</div></div>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="target-box"><div id="targetText">برای شروع، دکمه «شروع آزمون» را بزنید.</div></div>
+  <textarea id="typingInput" class="input-area" placeholder="کلمات یا متن بالا را اینجا تایپ کنید..." autocomplete="off" autocorrect="off" spellcheck="false" disabled></textarea>
+  <div class="action-grid">
+    <button class="primary-btn" id="startButton">▶ شروع آزمون</button>
+    <button class="secondary-btn" id="restartButton">↻ شروع مجدد</button>
+  </div>
+  <p class="message" id="statusMessage">تنظیمات آزمون را در بخش تنظیمات انتخاب کنید.</p>
+  <div id="resultBox" class="result-box hidden">
+    <div class="result-title">🎉 نتیجه آزمون</div>
+    <div class="result-grid">
+      <div class="result-item"><strong id="resultWpm">۰</strong><span>کلمه در دقیقه</span></div>
+      <div class="result-item"><strong id="resultAccuracy">۰٪</strong><span>دقت تایپ</span></div>
+      <div class="result-item"><strong id="resultCorrect">۰</strong><span>کاراکتر صحیح</span></div>
+      <div class="result-item"><strong id="resultErrors">۰</strong><span>کاراکتر اشتباه</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="section-title">🏅 بهترین رکوردها</div>
+  <ul id="recordList" class="record-list"><li>هنوز رکوردی ثبت نشده است.</li></ul>
+  <div class="action-grid">
+    <button class="secondary-btn" id="showStatsButton">📈 آمار کلی</button>
+    <button class="secondary-btn" id="helpButton">❔ راهنما</button>
+    <button class="secondary-btn" id="recordsButton">🏆 نمایش رکوردها</button>
+    <button class="danger-btn" id="clearRecordsButton">🗑 پاک کردن رکوردها</button>
+  </div>
+  <div id="statsBox" class="result-box hidden">
+    <div class="result-title">📈 آمار کلی شما</div>
+    <div class="result-grid">
+      <div class="result-item"><strong id="totalTests">۰</strong><span>تعداد آزمون‌ها</span></div>
+      <div class="result-item"><strong id="bestWpm">۰</strong><span>بهترین سرعت</span></div>
+      <div class="result-item"><strong id="averageWpm">۰</strong><span>میانگین سرعت</span></div>
+      <div class="result-item"><strong id="averageAccuracy">۰٪</strong><span>میانگین دقت</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <button id="settingsToggle" class="secondary-btn settings-toggle">⚙️ باز کردن تنظیمات آزمون و برنامه</button>
+  <div id="settingsPanel" class="settings-panel hidden">
+    <div class="section-title">🎯 تنظیمات آزمون</div>
+    <div class="settings-grid">
+      <div class="field"><label for="languageSelect">زبان تایپ</label>
+        <select id="languageSelect"><option value="fa">فارسی</option><option value="en">انگلیسی</option></select>
+      </div>
+      <div class="field"><label for="difficultySelect">سطح دشواری</label>
+        <select id="difficultySelect"><option value="easy">آسان</option><option value="medium" selected>متوسط</option><option value="hard">سخت</option></select>
+      </div>
+      <div class="field"><label for="durationSelect">مدت آزمون</label>
+        <select id="durationSelect"><option value="15">۱۵ ثانیه</option><option value="30" selected>۳۰ ثانیه</option><option value="60">۶۰ ثانیه</option><option value="120">۱۲۰ ثانیه</option></select>
+      </div>
+      <div class="field"><label for="modeSelect">روش تایپ</label>
+        <select id="modeSelect"><option value="word">کلمه به کلمه</option><option value="text">متن پیوسته</option></select>
+      </div>
+    </div>
+    <p class="message">تغییر تنظیمات هنگام اجرای آزمون، روی آزمون بعدی اعمال می‌شود.</p>
+    <hr style="border:0;border-top:1px solid var(--border);margin:20px 0">
+    <div class="section-title">🎨 انتخاب رنگ برنامه</div>
+    <p class="subtitle">برای تغییر رنگ اصلی برنامه، یکی از رنگ‌ها را انتخاب کنید.</p>
+    <div class="theme-list" id="themeList">
+      <button type="button" class="theme-choice" data-theme="purple" onclick="setTheme('purple')" aria-label="بنفش" title="بنفش" style="background:#6554d9"></button>
+      <button type="button" class="theme-choice" data-theme="blue" onclick="setTheme('blue')" aria-label="آبی" title="آبی" style="background:#1976d2"></button>
+      <button type="button" class="theme-choice" data-theme="green" onclick="setTheme('green')" aria-label="سبز" title="سبز" style="background:#168b55"></button>
+      <button type="button" class="theme-choice" data-theme="orange" onclick="setTheme('orange')" aria-label="نارنجی" title="نارنجی" style="background:#e87522"></button>
+      <button type="button" class="theme-choice" data-theme="pink" onclick="setTheme('pink')" aria-label="صورتی" title="صورتی" style="background:#d94691"></button>
+      <button type="button" class="theme-choice" data-theme="teal" onclick="setTheme('teal')" aria-label="فیروزه‌ای" title="فیروزه‌ای" style="background:#008b8b"></button>
+      <button type="button" class="theme-choice" data-theme="red" onclick="setTheme('red')" aria-label="قرمز" title="قرمز" style="background:#d73750"></button>
+      <button type="button" class="theme-choice" data-theme="indigo" onclick="setTheme('indigo')" aria-label="نیلی" title="نیلی" style="background:#3949ab"></button>
+      <button type="button" class="theme-choice" data-theme="brown" onclick="setTheme('brown')" aria-label="قهوه‌ای" title="قهوه‌ای" style="background:#795548"></button>
+      <button type="button" class="theme-choice" data-theme="gray" onclick="setTheme('gray')" aria-label="خاکستری" title="خاکستری" style="background:#596579"></button>
+    </div>
+    <div class="setting-row"><span>🔊 صدای برنامه</span><button type="button" class="secondary-btn" id="soundButton">روشن</button></div>
+    <div class="setting-row"><span>⏱ شمارش معکوس پیش از شروع</span><button type="button" class="secondary-btn" id="countdownButton">روشن</button></div>
+    <div class="setting-row"><span>🌙 حالت شب</span><button type="button" class="secondary-btn" id="darkModeButton">خاموش</button></div>
+    <div class="setting-row"><span>بازگرداندن تنظیمات به حالت اولیه</span><button type="button" class="danger-btn" id="resetSettingsButton">بازنشانی</button></div>
+  </div>
+</section>
+</main>
+
+<footer>ساخته‌شده با ❤️ برای تمرین و پیشرفت تایپ<br>نام سازنده: <strong>سید حسین حسینی</strong></footer>
+</div>
+
+<div id="modalBackdrop" class="modal-backdrop hidden">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h2 id="modalTitle">راهنمای برنامه</h2>
+    <div id="modalContent"></div>
+    <div class="modal-actions" id="modalActions"><button class="primary-btn" id="modalCloseButton">متوجه شدم</button></div>
+  </div>
+</div>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+
+const themes = {
+  purple:["#6554d9","#8b5cf6"], blue:["#1976d2","#42a5f5"],
+  green:["#168b55","#43b581"], orange:["#e87522","#ffad42"],
+  pink:["#d94691","#f472b6"], teal:["#008b8b","#20b2aa"],
+  red:["#d73750","#ff667a"], indigo:["#3949ab","#7986cb"],
+  brown:["#795548","#a1887f"], gray:["#596579","#8a98ad"]
+};
+
+const wordBank = {
+fa:{
+easy:["سلام","خانه","کتاب","مدرسه","دوست","مادر","پدر","زندگی","خوب","روز","شب","آب","نان","گل","درخت","آسمان","زمین","زمان","مردم","کار","علم","فکر","امید","عشق","آرامش","خانواده","دانش","تلاش","موفقیت","مهربانی","بهار","تابستان","پاییز","زمستان","باران","خورشید","پنجره","باغ","پرنده","دریا","کوه","راه","لبخند"],
+medium:["پیشرفت","برنامه‌ریزی","مهارت","تمرین","سرعت","دقت","یادگیری","دانش‌آموز","رایانه","فناوری","تجربه","پشتکار","اندیشه","پرسش","پاسخ","خلاقیت","هدف‌گذاری","تصمیم‌گیری","مسئولیت","همکاری","فرصت","توانایی","ارزیابی","آموزش","اطلاعات","ارتباط","راهکار","استعداد","تمرکز","مدیریت","کاربردی","پژوهش","خودباوری","موفقیت‌آمیز","پویایی","آینده‌نگری"],
+hard:["مسئولیت‌پذیری","خودآگاهی","تصمیم‌گیری","هم‌افزایی","برون‌سپاری","پیش‌فرض","توانمندسازی","بهینه‌سازی","جامعه‌شناسی","روان‌شناختی","دست‌یابی","هم‌اندیشی","قاعده‌مندی","پیاده‌سازی","ارزش‌آفرینی","فناوری‌محور","داده‌پردازی","کارآفرینی","چشم‌انداز","اثربخشی","ارزیابی‌پذیر","نظام‌مند","بازخورد","زیرساخت","هم‌زمانی","فرایندمحور","انعطاف‌پذیری","پاسخ‌گویی","توانایی‌های","یادگیری‌محور","خودتنظیمی"]
+},
+en:{
+easy:["hello","book","house","water","happy","school","friend","family","green","table","chair","light","music","apple","orange","window","garden","morning","evening","smile","dream","world","people","simple","learn","write","read","small","great","today","tomorrow","beautiful","summer"],
+medium:["computer","practice","keyboard","language","progress","accuracy","challenge","creative","education","internet","knowledge","improve","carefully","important","discover","technology","remember","experience","successful","attention","performance","development","comfortable","excellent","communication","information","wonderful"],
+hard:["responsibility","extraordinary","characteristic","professional","concentration","implementation","accessibility","transformation","synchronization","entrepreneurship","interdisciplinary","unpredictable","comprehensive","determination","internationalization","configuration","acknowledgement","representative","collaboration","multidimensional","recommendation","compatibility","authentication","simultaneously"]
+}
+};
+
+const defaultSettings={theme:"purple",sound:true,countdown:true,dark:false};
+let settings={...defaultSettings},records=[],allResults=[];
+let running=false,waitingCountdown=false,finished=false;
+let countdownTimer=null,timerInterval=null,testStartTime=0;
+let elapsedSeconds=0,timeLeft=30,testDuration=30;
+let correctChars=0,incorrectChars=0,currentTarget="";
+let currentWordIndex=0,wordTargets=[],textTarget="";
+let wordCorrect=0,wordErrors=0;
+
+const STORAGE={settings:"typingSettings_v5",records:"typingRecords_v5",results:"typingResults_v5"};
+
+function safeGet(key,fallback){
+  try{const v=localStorage.getItem(key);return v===null?fallback:v}catch(e){return fallback}
+}
+function safeSet(key,value){
+  try{localStorage.setItem(key,value);return true}catch(e){return false}
+}
+function safeRemove(key){try{localStorage.removeItem(key)}catch(e){}}
+function toPersianNumber(v){return String(v).replace(/\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[Number(d)])}
+function formatDate(v){
+  try{return new Date(v).toLocaleString("fa-IR",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"})}catch(e){return ""}
+}
+function playTone(frequency=650,duration=70){
+  if(!settings.sound)return;
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+    const ctx=new AC(),osc=ctx.createOscillator(),gain=ctx.createGain();
+    osc.frequency.value=frequency;osc.type="sine";gain.gain.value=.04;
+    osc.connect(gain);gain.connect(ctx.destination);osc.start();
+    osc.stop(ctx.currentTime+duration/1000);osc.onended=()=>ctx.close();
+  }catch(e){}
+}
+function saveSettings(){safeSet(STORAGE.settings,JSON.stringify(settings))}
+
+/* اصلاح اصلی تغییر رنگ */
+function setTheme(themeName){
+  if(!Object.prototype.hasOwnProperty.call(themes,themeName))return;
+  settings.theme=themeName;
+  const colors=themes[themeName];
+  const root=document.documentElement;
+
+  root.style.setProperty("--primary",colors[0]);
+  root.style.setProperty("--primary2",colors[1]);
+
+  const meta=document.querySelector('meta[name="theme-color"]');
+  if(meta)meta.setAttribute("content",colors[0]);
+
+  document.querySelectorAll(".theme-choice").forEach(button=>{
+    const selected=button.dataset.theme===themeName;
+    button.classList.toggle("selected",selected);
+    button.setAttribute("aria-pressed",String(selected));
+  });
+
+  saveSettings();
+  playTone(600,50);
+}
+window.setTheme=setTheme;
+
+function applySettings(){
+  setTheme(settings.theme);
+  document.body.classList.toggle("dark",!!settings.dark);
+  $("soundButton").textContent=settings.sound?"روشن":"خاموش";
+  $("countdownButton").textContent=settings.countdown?"روشن":"خاموش";
+  $("darkModeButton").textContent=settings.dark?"روشن":"خاموش";
+  saveSettings();
+}
+function loadSettings(){
+  try{
+    const saved=JSON.parse(safeGet(STORAGE.settings,"{}"));
+    settings={...defaultSettings,...saved};
+    if(!themes[settings.theme])settings.theme="purple";
+  }catch(e){settings={...defaultSettings}}
+  applySettings();
+}
+function loadRecords(){
+  try{const x=JSON.parse(safeGet(STORAGE.records,"[]"));records=Array.isArray(x)?x:[]}catch(e){records=[]}
+  renderRecords();
+}
+function loadResults(){
+  try{const x=JSON.parse(safeGet(STORAGE.results,"[]"));allResults=Array.isArray(x)?x:[]}catch(e){allResults=[]}
+}
+function saveResults(){
+  if(allResults.length>500)allResults=allResults.slice(-500);
+  safeSet(STORAGE.results,JSON.stringify(allResults));
+}
+function saveRecord(result){
+  records.push(result);
+  records.sort((a,b)=>(Number(b.wpm)||0)-(Number(a.wpm)||0));
+  records=records.slice(0,10);
+  safeSet(STORAGE.records,JSON.stringify(records));renderRecords();
+}
+function renderRecords(){
+  const list=$("recordList");list.innerHTML="";
+  if(!records.length){const li=document.createElement("li");li.textContent="هنوز رکوردی ثبت نشده است.";list.appendChild(li);return}
+  records.forEach((r,i)=>{
+    const li=document.createElement("li"),left=document.createElement("span"),right=document.createElement("span");
+    left.textContent=`${toPersianNumber(i+1)}. ${r.language==="fa"?"فارسی":"انگلیسی"} | ${formatDate(r.date)}`;
+    right.className="record-score";right.textContent=`${toPersianNumber(r.wpm)} WPM · ${toPersianNumber(r.accuracy)}٪`;
+    li.append(left,right);list.appendChild(li);
+  });
+}
+function renderStats(){
+  $("totalTests").textContent=toPersianNumber(allResults.length);
+  if(!allResults.length){$("bestWpm").textContent="۰";$("averageWpm").textContent="۰";$("averageAccuracy").textContent="۰٪";return}
+  const best=Math.max(...allResults.map(x=>Number(x.wpm)||0));
+  const avg=allResults.reduce((s,x)=>s+(Number(x.wpm)||0),0)/allResults.length;
+  const acc=allResults.reduce((s,x)=>s+(Number(x.accuracy)||0),0)/allResults.length;
+  $("bestWpm").textContent=toPersianNumber(best);
+  $("averageWpm").textContent=toPersianNumber(Math.round(avg));
+  $("averageAccuracy").textContent=toPersianNumber(Math.round(acc))+"٪";
+}
+function getLanguage(){return $("languageSelect").value}
+function getDifficulty(){return $("difficultySelect").value}
+function getMode(){return $("modeSelect").value}
+function randomItem(a){return a[Math.floor(Math.random()*a.length)]}
+function makeWordTargets(count=100){
+  const bank=wordBank[getLanguage()][getDifficulty()];
+  return Array.from({length:count},()=>randomItem(bank));
+}
+function makeTextTarget(){
+  const bank=wordBank[getLanguage()][getDifficulty()];
+  const count=getDifficulty()==="easy"?40:getDifficulty()==="medium"?55:65;
+  return Array.from({length:count},()=>randomItem(bank)).join(" ");
+}
+function normalizeText(v){
+  return String(v).replace(/\u064A/g,"\u06CC").replace(/\u0643/g,"\u06A9").replace(/\r\n/g,"\n");
+}
+function escapeHTML(v){
+  return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+}
+function renderTarget(){
+  const target=currentTarget||"",input=normalizeText($("typingInput").value);let html="";
+  for(let i=0;i<target.length;i++){
+    const ch=target[i];let cls="remaining";
+    if(i<input.length)cls=input[i]===ch?"correct":"incorrect";
+    if(ch===" ")html+=`<span class="${cls} space-mark"> </span>`;
+    else if(ch==="\u200c")html+=`<span class="${cls} space-mark">‌</span>`;
+    else html+=`<span class="${cls}">${escapeHTML(ch)}</span>`;
+  }
+  $("targetText").innerHTML=html||"برای شروع، دکمه شروع آزمون را بزنید.";
+}
+function commonPrefixLength(a,b){
+  let n=0;while(n<Math.min(a.length,b.length)&&a[n]===b[n])n++;return n;
+}
+function getCurrentMetrics(){
+  const input=normalizeText($("typingInput").value);let correct=0,errors=0;
+  for(let i=0;i<input.length;i++){if(i<currentTarget.length&&input[i]===currentTarget[i])correct++;else errors++}
+  return {input,correct,errors,total:input.length,accuracy:input.length?Math.round(correct/input.length*100):100};
+}
+function updateLiveStats(){
+  const m=getCurrentMetrics();
+  const seconds=running?Math.max(.5,(Date.now()-testStartTime)/1000):Math.max(1,elapsedSeconds);
+  const liveCorrect=getMode()==="word"?correctChars+m.correct:m.correct;
+  $("wpmValue").textContent=toPersianNumber(Math.round((liveCorrect/5)/(seconds/60)));
+  const total=correctChars+incorrectChars+m.total,correct=correctChars+m.correct;
+  $("accuracyValue").textContent=toPersianNumber(total?Math.round(correct/total*100):100)+"٪";
+  $("timeValue").textContent=toPersianNumber(Math.max(0,timeLeft));
+  $("progressBar").style.width=Math.max(0,Math.min(100,timeLeft/testDuration*100))+"%";
+}
+function stopTimers(){
+  if(timerInterval!==null)clearInterval(timerInterval);
+  if(countdownTimer!==null)clearInterval(countdownTimer);
+  timerInterval=null;countdownTimer=null;
+}
+function resetSession(){
+  stopTimers();running=false;waitingCountdown=false;finished=false;
+  testDuration=Number($("durationSelect").value)||30;timeLeft=testDuration;
+  elapsedSeconds=0;testStartTime=0;correctChars=0;incorrectChars=0;
+  wordCorrect=0;wordErrors=0;currentWordIndex=0;
+  $("typingInput").value="";$("typingInput").disabled=true;
+  $("resultBox").classList.add("hidden");$("startButton").disabled=false;
+  $("startButton").textContent="▶ شروع آزمون";
+  if(getMode()==="text"){textTarget=makeTextTarget();currentTarget=textTarget}
+  else{wordTargets=makeWordTargets();currentTarget=wordTargets[0]||""}
+  renderTarget();updateLiveStats();
+  $("statusMessage").textContent="برای آغاز، دکمه شروع آزمون را بزنید.";
+}
+function startTest(){
+  if(running||waitingCountdown)return;
+  resetSession();$("statsBox").classList.add("hidden");
+  if(settings.countdown)beginCountdown();else activateTest();
+}
+function beginCountdown(){
+  waitingCountdown=true;$("startButton").disabled=true;
+  let count=3;$("targetText").textContent=toPersianNumber(count);
+  $("statusMessage").textContent="آماده باشید...";playTone(500,80);
+  countdownTimer=setInterval(()=>{
+    count--;
+    if(count>0){$("targetText").textContent=toPersianNumber(count);$("statusMessage").textContent="آماده باشید...";playTone(500,80)}
+    else{clearInterval(countdownTimer);countdownTimer=null;waitingCountdown=false;activateTest()}
+  },1000);
+}
+function activateTest(){
+  running=true;finished=false;testDuration=Number($("durationSelect").value)||30;
+  timeLeft=testDuration;testStartTime=Date.now();elapsedSeconds=0;
+  $("typingInput").disabled=false;$("typingInput").value="";
+  $("startButton").disabled=true;$("startButton").textContent="⏳ آزمون در حال اجرا";
+  $("statusMessage").textContent="شروع کنید! با دقت و سرعت تایپ کنید.";
+  currentTarget=getMode()==="text"?textTarget:wordTargets[currentWordIndex];
+  renderTarget();updateLiveStats();$("typingInput").focus();
+  timerInterval=setInterval(()=>{
+    if(!running)return;
+    elapsedSeconds=(Date.now()-testStartTime)/1000;
+    timeLeft=Math.max(0,Math.ceil(testDuration-elapsedSeconds));
+    updateLiveStats();if(timeLeft<=0)finishTest();
+  },200);
+}
+function nextWord(){
+  currentWordIndex++;
+  if(currentWordIndex>=wordTargets.length)wordTargets.push(...makeWordTargets(50));
+  currentTarget=wordTargets[currentWordIndex];$("typingInput").value="";
+  renderTarget();updateLiveStats();
+}
+function submitCurrentWord(){
+  if(!running||getMode()!=="word")return;
+  const input=normalizeText($("typingInput").value).trim(),target=currentTarget;
+  if(!input)return;
+  const common=commonPrefixLength(input,target);
+  const correct=input===target?target.length:common;
+  const errors=input===target?0:Math.max(1,input.length-common)+Math.max(0,target.length-input.length);
+  correctChars+=correct;incorrectChars+=errors;wordCorrect+=correct;wordErrors+=errors;
+  $("statusMessage").textContent=input===target?"آفرین! کلمه صحیح بود.":"کلمه اشتباه بود؛ ادامه دهید.";
+  playTone(input===target?750:260,input===target?45:90);nextWord();
+}
+function handleWordTyping(){
+  if(!running)return;
+  const input=normalizeText($("typingInput").value);renderTarget();
+  if(input===currentTarget){
+    correctChars+=currentTarget.length;wordCorrect+=currentTarget.length;
+    $("statusMessage").textContent="درست بود! ادامه دهید.";playTone(750,45);nextWord();return;
+  }
+  if(input.endsWith(" "))submitCurrentWord();
+  updateLiveStats();
+}
+function handleTextTyping(){
+  if(!running)return;
+  const input=normalizeText($("typingInput").value);currentTarget=textTarget;renderTarget();
+  let correct=0,errors=0;
+  for(let i=0;i<input.length;i++){if(i<textTarget.length&&input[i]===textTarget[i])correct++;else errors++}
+  correctChars=correct;incorrectChars=errors;updateLiveStats();
+  if(input.length>=textTarget.length){$("statusMessage").textContent="متن به پایان رسید.";finishTest()}
+}
+function handleTyping(){if(running){if(getMode()==="word")handleWordTyping();else handleTextTyping()}}
+function finishTest(){
+  if(finished)return;
+  finished=true;running=false;waitingCountdown=false;stopTimers();
+  elapsedSeconds=Math.max(.5,Math.min(testDuration,(Date.now()-testStartTime)/1000));
+  timeLeft=0;$("typingInput").disabled=true;$("startButton").disabled=false;
+  $("startButton").textContent="▶ آزمون جدید";
+  let actualCorrect=correctChars,actualErrors=incorrectChars;
+  if(getMode()==="text"){
+    const input=normalizeText($("typingInput").value);actualCorrect=0;actualErrors=0;
+    for(let i=0;i<input.length;i++){if(i<textTarget.length&&input[i]===textTarget[i])actualCorrect++;else actualErrors++}
+  }
+  const wpm=Math.round((actualCorrect/5)/(elapsedSeconds/60));
+  const total=actualCorrect+actualErrors,accuracy=total?Math.round(actualCorrect/total*100):100;
+  const result={wpm,accuracy,correct:actualCorrect,errors:actualErrors,language:getLanguage(),difficulty:getDifficulty(),mode:getMode(),duration:testDuration,date:new Date().toISOString()};
+  $("resultWpm").textContent=toPersianNumber(wpm);
+  $("resultAccuracy").textContent=toPersianNumber(accuracy)+"٪";
+  $("resultCorrect").textContent=toPersianNumber(actualCorrect);
+  $("resultErrors").textContent=toPersianNumber(actualErrors);
+  $("resultBox").classList.remove("hidden");
+  $("statusMessage").textContent="آزمون به پایان رسید. برای تمرین دوباره، آزمون جدید را شروع کنید.";
+  $("wpmValue").textContent=toPersianNumber(wpm);
+  $("accuracyValue").textContent=toPersianNumber(accuracy)+"٪";
+  $("timeValue").textContent="۰";$("progressBar").style.width="0%";
+  allResults.push(result);saveResults();saveRecord(result);renderStats();playTone(850,180);
+}
+function restartTest(){stopTimers();running=false;waitingCountdown=false;finished=false;resetSession();startTest()}
+
+function showModal(title,contentHTML,actionsHTML=null){
+  $("modalTitle").textContent=title;$("modalContent").innerHTML=contentHTML;
+  $("modalActions").innerHTML=actionsHTML||'<button class="primary-btn" id="modalCloseButton">متوجه شدم</button>';
+  $("modalBackdrop").classList.remove("hidden");
+  const b=document.getElementById("modalCloseButton");if(b)b.addEventListener("click",closeModal);
+}
+function closeModal(){$("modalBackdrop").classList.add("hidden")}
+function showHelp(){
+  showModal("راهنمای تست سرعت تایپ",`
+  <p><strong>۱. تنظیم آزمون:</strong> زبان، سطح دشواری، مدت و روش تایپ را انتخاب کنید.</p>
+  <p><strong>۲. شروع:</strong> در صورت روشن بودن شمارش معکوس، آزمون پس از سه ثانیه شروع می‌شود.</p>
+  <p><strong>۳. رنگ حروف:</strong> حروف صحیح سبز و حروف اشتباه قرمز هستند.</p>
+  <p><strong>۴. سرعت تایپ:</strong> هر پنج کاراکتر یک کلمه استاندارد محسوب می‌شود.</p>
+  <p><strong>۵. رکوردها:</strong> نتایج در حافظه مرورگر همین دستگاه ذخیره می‌شوند.</p>
+  <p><strong>۶. ظاهر:</strong> رنگ، صدا و حالت شب را از تنظیمات تغییر دهید.</p>
+  <p><strong>۷. روش کلمه به کلمه:</strong> پس از تکمیل کلمه، کلمه بعدی خودکار نمایش داده می‌شود.</p>
+  <p><strong>۸. سازنده:</strong> سید حسین حسینی</p>`);
+}
+function showRecords(){
+  const content=records.length
+    ?`<ul>${records.map((r,i)=>`<li>${toPersianNumber(i+1)}. ${r.language==="fa"?"فارسی":"انگلیسی"} — سرعت ${toPersianNumber(r.wpm)} کلمه در دقیقه، دقت ${toPersianNumber(r.accuracy)}٪</li>`).join("")}</ul>`
+    :"<p>هنوز رکوردی ثبت نشده است.</p>";
+  showModal("🏆 رکوردهای برتر",content);
+}
+function clearRecords(){
+  showModal("پاک کردن رکوردها","<p>آیا مطمئن هستید که تمام رکوردها و آمار پاک شوند؟</p>",
+  '<button class="danger-btn" id="confirmClearButton">بله، پاک شود</button><button class="secondary-btn" id="cancelClearButton">انصراف</button>');
+  $("confirmClearButton").addEventListener("click",()=>{
+    records=[];allResults=[];safeRemove(STORAGE.records);safeRemove(STORAGE.results);
+    renderRecords();renderStats();$("statsBox").classList.add("hidden");
+    showModal("انجام شد","<p>رکوردها و آمار پاک شدند.</p>");
+  });
+  $("cancelClearButton").addEventListener("click",closeModal);
+}
+function resetSettings(){
+  showModal("بازنشانی تنظیمات","<p>تنظیمات ظاهری به حالت اولیه برگردند؟</p>",
+  '<button class="primary-btn" id="confirmResetButton">بازنشانی</button><button class="secondary-btn" id="cancelResetButton">انصراف</button>');
+  $("confirmResetButton").addEventListener("click",()=>{
+    settings={...defaultSettings};applySettings();
+    showModal("انجام شد","<p>تنظیمات به حالت اولیه بازگشتند.</p>");
+  });
+  $("cancelResetButton").addEventListener("click",closeModal);
+}
+
+/* دکمه‌های اصلی */
+$("startButton").addEventListener("click",startTest);
+$("restartButton").addEventListener("click",restartTest);
+$("helpButton").addEventListener("click",showHelp);
+$("recordsButton").addEventListener("click",showRecords);
+$("showStatsButton").addEventListener("click",()=>{renderStats();$("statsBox").classList.toggle("hidden")});
+$("clearRecordsButton").addEventListener("click",clearRecords);
+$("modalBackdrop").addEventListener("click",e=>{if(e.target===$("modalBackdrop"))closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+/* کنترل تایپ */
+$("typingInput").addEventListener("input",handleTyping);
+$("typingInput").addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&getMode()==="word"&&running){e.preventDefault();submitCurrentWord()}
+});
+
+/* تنظیمات آزمون */
+["languageSelect","difficultySelect","durationSelect","modeSelect"].forEach(id=>{
+  $(id).addEventListener("change",()=>{if(!running&&!waitingCountdown)resetSession()});
+});
+
+/* باز و بسته کردن تنظیمات */
+$("settingsToggle").addEventListener("click",()=>{
+  const hidden=$("settingsPanel").classList.toggle("hidden");
+  $("settingsToggle").textContent=hidden?"⚙️ باز کردن تنظیمات آزمون و برنامه":"✖ بستن تنظیمات";
+});
+
+/* پشتیبان انتخاب رنگ: حتی اگر کلیک مستقیم دکمه مشکل داشته باشد */
+$("themeList").addEventListener("click",event=>{
+  const button=event.target.closest(".theme-choice");
+  if(button)setTheme(button.dataset.theme);
+});
+
+/* صدا، شمارش معکوس و حالت شب */
+$("soundButton").addEventListener("click",()=>{
+  settings.sound=!settings.sound;applySettings();if(settings.sound)playTone(650,60);
+});
+$("countdownButton").addEventListener("click",()=>{settings.countdown=!settings.countdown;applySettings()});
+$("darkModeButton").addEventListener("click",()=>{settings.dark=!settings.dark;applySettings()});
+$("resetSettingsButton").addEventListener("click",resetSettings);
+
+/* بارگذاری اطلاعات */
+loadSettings();
+loadRecords();
+loadResults();
+renderStats();
+resetSession();
+</script>
+</body>
+</html>
